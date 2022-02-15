@@ -34,7 +34,7 @@ const addEmployee = [
     {
       type: 'list',
       name: 'role',
-      message: 'What is your role in the company? (required)'
+      message: 'What is your role in the company? (required)',
       validate: roleInput => {
         if (roleInput) {
           return true;
@@ -44,7 +44,7 @@ const addEmployee = [
         }
       }
     },
-    }
+    
     {
         type: 'input',
         name: 'email',
@@ -69,7 +69,7 @@ Add New Employee
 =================
 `);
 
-    .prompt([
+    prompt([
       {
         type: 'input',
         name: 'name',
