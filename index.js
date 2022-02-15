@@ -32,6 +32,20 @@ const addEmployee = [
       }
     },
     {
+      type: 'list',
+      name: 'role',
+      message: 'What is your role in the company? (required)'
+      validate: roleInput => {
+        if (roleInput) {
+          return true;
+        } else {
+          console.log('Please choose a role');
+          return false;
+        }
+      }
+    },
+    }
+    {
         type: 'input',
         name: 'email',
         message: 'Enter your email address (Required)',
