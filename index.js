@@ -9,7 +9,8 @@ const Manager = require('./lib/Manager');
 const generateSite = require('./src/page-template');
 
 
-const addEmployee = [
+const addEmployee = () => {
+  return inquirer.prompt([
       {
         type: 'input',
         name: 'name',
@@ -65,12 +66,21 @@ const addEmployee = [
         },
         {
           type: 'confirm',
-          name: 'add',
+          name: 'addNewEmployee',
           message: 'Would you like to add another employee?',
           default: false
         },
-    ]
+    ])
 
+    .then(data => {
+      if (addEmployee.addNewEmployee) {
+        return addEmployee()
+      } else {
+        init();
+      }
+    });
+  }
+  
 
    // Function to write HTML fileg
 function writeToFile(fileName, data) {
@@ -89,7 +99,6 @@ const copyFile = () => {
         reject(err);
         return;
       }
-
       resolve({
         ok: true,
         message: 'Stylesheet created!'
