@@ -1,159 +1,111 @@
-const generatePage = require('./src/page-template');
-
+//modules
 const inquirer = require('inquirer');
-const fs = require('fs')
+const fs = require('fs');
+
+//employee classes and templates
+const Engineer = require('./lib/Engineer');
+const Intern = require('./lib/Intern');
+const Manager = require('./lib/Manager');
+const generateSite = require('./src/page-template');
+
 
 const addEmployee = [
-
-    {
-      type: 'input',
-      name: 'name',
-      message: 'What is your name? (Required)',
-      validate: nameInput => {
-        if (nameInput) {
-          return true;
-        } else {
-          console.log('Please enter your name!');
-          return false;
-        }
-      }
-    },
-    {
-      type: 'input',
-      name: 'id',
-      message: 'Enter your employee id (Required)',
-      validate: idInput => {
-        if (idInput) {
-          return true;
-        } else {
-          console.log('Please enter your employee id!');
-          return false;
-        }
-      }
-    },
-    {
-      type: 'list',
-      name: 'role',
-      message: 'What is your role in the company? (required)',
-      validate: roleInput => {
-        if (roleInput) {
-          return true;
-        } else {
-          console.log('Please choose a role');
-          return false;
-        }
-      }
-    },
-    
-    {
-        type: 'input',
-        name: 'email',
-        message: 'Enter your email address (Required)',
-        validate: emailInput => {
-            valid = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)
-          if (emailInput) {
-            return true;
-          } else {
-            console.log('Please enter a valid email address!');
-            return false;
-          }
-        }
-      }
-    ]
-    
-
-const promptProject = portfolioData => {
-  console.log(`
-=================
-Add New Employee
-=================
-`);
-
-    prompt([
       {
         type: 'input',
         name: 'name',
-        message: 'What is the name of your project? (Required)',
+        message: 'Please enter employee name (Required)',
         validate: nameInput => {
           if (nameInput) {
             return true;
           } else {
-            console.log('You need to enter a project name!');
+            console.log('Employee name is required to continue!');
             return false;
           }
         }
       },
       {
         type: 'input',
-        name: 'description',
-        message: 'Provide a description of the project (Required)',
-        validate: descriptionInput => {
-          if (descriptionInput) {
-            return true;
-          } else {
-            console.log('You need to enter a project description!');
-            return false;
+        name: 'email',
+        message: 'Please enter employee email address (Required)',
+          validate: emailInput => {
+            if (emailInput) {
+              return true;
+            } else {
+              console.log('Please enter a valid email address!');
+              return false;
+            }
           }
-        }
       },
       {
-        type: 'checkbox',
-        name: 'languages',
-        message: 'What did you this project with? (Check all that apply)',
-        choices: ['JavaScript', 'HTML', 'CSS', 'ES6', 'jQuery', 'Bootstrap', 'Node']
-      },
-      {
-        type: 'input',
-        name: 'link',
-        message: 'Enter the GitHub link to your project. (Required)',
-        validate: linkInput => {
-          if (linkInput) {
-            return true;
-          } else {
-            console.log('You need to enter a project GitHub link!');
-            return false;
+          type: 'list',
+          name: 'role',
+          message: 'Please choose an employee role (Required)',
+          choices: ['Engineer', 'Manager', 'Inter'],
+          validate: roleInput => {
+            if (roleInput) {
+              return true;
+            } else {
+              console.log('Please choose an employee role!');
+              return false;
+            }
           }
-        }
-      },
-      {
-        type: 'confirm',
-        name: 'feature',
-        message: 'Would you like to feature this project?',
-        default: false
-      },
-      {
-        type: 'confirm',
-        name: 'confirmAddProject',
-        message: 'Would you like to enter another project?',
-        default: false
+        },
+        {
+          type: 'input',
+          name: 'id',
+          message: 'Please enter employee ID (Required)',
+            validate: idInput => {
+              if (idInput) {
+                return true;
+              } else {
+                console.log('Employee ID is required!');
+                return false;
+              }
+            }
+        },
+        {
+          type: 'confirm',
+          name: 'add',
+          message: 'Would you like to add another employee?',
+          default: false
+        },
+    ]
+
+
+   // Function to write HTML fileg
+function writeToFile(fileName, data) {
+  fs.writeFile(fileName, generateSite(data), err => {
+      if (err) {
+      console.error(err)
+      return
       }
-    ])
-    .then(projectData => {
-      portfolioData.projects.push(projectData);
-      if (projectData.confirmAddProject) {
-        return promptProject(portfolioData);
-      } else {
-        return portfolioData;
+  })
+}
+// Function to copy style sheet
+const copyFile = () => {
+  return new Promise((resolve, reject) => {
+    fs.copyFile('./src/style.css', './dist/style.css', err => {
+      if (err) {
+        reject(err);
+        return;
       }
+
+      resolve({
+        ok: true,
+        message: 'Stylesheet created!'
+      });
     });
+  });
 };
 
-promptUser()
-  .then(promptProject)
-  .then(portfolioData => {
-    return generatePage(portfolioData);
-  })
-  .then(pageHTML => {
-    return writeFile(pageHTML);
-  })
-  .then(writeFileResponse => {
-    console.log(writeFileResponse);
-    return copyFile();
-  })
-  .then(copyFileResponse => {
-    console.log(copyFileResponse);
-  })
-  .catch(err => {
-    console.log(err);
-  });
+// Function to initialize app
 
+function init() {
+  inquirer.prompt(addEmployee).then((data) => {
+      writeToFile('./dist/example.html', data);
+      copyFile('./src/style.css', './dist/style.css')
+  });
+}
+
+// Function call to initialize app
+init();
