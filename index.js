@@ -9,8 +9,7 @@ const Manager = require('./lib/Manager');
 const generateSite = require('./src/page-template');
 
 
-const addEmployee = () => {
-  return inquirer.prompt([
+const addEmployee = [
       {
         type: 'input',
         name: 'name',
@@ -38,10 +37,23 @@ const addEmployee = () => {
           }
       },
       {
+        type: 'input',
+        name: 'id',
+        message: 'Please enter employee id (Required)',
+        validate: idInput => {
+            if (idInput) {
+              return true;
+            } else {
+              console.log('Employee ID is required!');
+              return false;
+            }
+          }
+      },
+      {
           type: 'list',
           name: 'role',
           message: 'Please choose an employee role (Required)',
-          choices: ['Engineer', 'Manager', 'Inter'],
+          choices: ['Engineer', 'Manager', 'Intern'],
           validate: roleInput => {
             if (roleInput) {
               return true;
@@ -53,16 +65,45 @@ const addEmployee = () => {
         },
         {
           type: 'input',
-          name: 'id',
-          message: 'Please enter employee ID (Required)',
-            validate: idInput => {
-              if (idInput) {
-                return true;
-              } else {
-                console.log('Employee ID is required!');
-                return false;
-              }
+          name: 'school',
+          message: 'What school does the intern attend? (Required)',
+          when: (answers) => answers.role === 'Intern',
+          validate: schoolInput => {
+            if (schoolInput) {
+              return true;
+            } else {
+              console.log('Intern school is required!');
+              return false;
             }
+          }
+        },
+        {
+          type: 'input',
+          name: 'office number',
+          message: 'What is the office number of the manager? (Required)',
+          when: (answers) => answers.role === 'Manager',
+          validate: schoolInput => {
+            if (schoolInput) {
+              return true;
+            } else {
+              console.log('Manager office number is required!');
+              return false;
+            }
+          }
+        },
+        {
+          type: 'input',
+          name: 'github',
+          message: 'Please enter the GitHub username for the engineer (Required)',
+          when: (answers) => answers.role === 'Engineer',
+          validate: githubInput => {
+            if (githubInput) {
+              return true;
+            } else {
+              console.log('Github username is required!');
+              return false;
+            }
+          }
         },
         {
           type: 'confirm',
@@ -70,19 +111,19 @@ const addEmployee = () => {
           message: 'Would you like to add another employee?',
           default: false
         },
-    ])
+    ] 
 
-    .then(data => {
-      if (addEmployee.addNewEmployee) {
-        return addEmployee()
-      } else {
-        init();
+    function addMoreEmp() {
+        const addMore = inquirer.prompt(addEmployee.addNewEmployee);
+        if (addNewEmployee) {
+          addEmployee;
+        } else {
+          init();
+        }
       }
-    });
-  }
-  
+    
 
-   // Function to write HTML fileg
+  // Function to write HTML file
 function writeToFile(fileName, data) {
   fs.writeFile(fileName, generateSite(data), err => {
       if (err) {
