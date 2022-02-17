@@ -42,11 +42,11 @@
         return `
             <div class="employee-card">
             <div class="card-top-bar">
-            <div class="employee-name">${name}</div>
-            <div class="employee-role">${role}</div>
+            <div class="employee-name">${this.name}</div>
+            <div class="employee-role">${this.role}</div>
             </div>
             <div class="card-body-entry">
-            id:${id}
+            id:${this.id}
             </div>
             <div class="card-body-entry">
             email: <a href="mailto:${email}">${email}</a> 

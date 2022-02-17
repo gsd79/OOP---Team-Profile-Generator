@@ -1,202 +1,285 @@
 //modules
-const inquirer = require('inquirer');
-const fs = require('fs');
+const inquirer = require("inquirer");
+const fs = require("fs");
 
 //employee classes and templates
-const Engineer = require('./lib/Engineer');
-const Intern = require('./lib/Intern');
-const Manager = require('./lib/Manager');
-const generateSite = require('./src/page-template');
+const Engineer = require("./lib/Engineer");
+const Intern = require("./lib/Intern");
+const Manager = require("./lib/Manager");
+const generateSite = require("./src/page-template");
 
+const members = [];
 
 const managerQuestions = () => {
-  return inquirer.prompt([
+  inquirer
+    .prompt([
       {
-        type: 'input',
-        name: 'name',
-        message: 'Please enter manager\'s name (Required)',
-        validate: nameInput => {
+        type: "input",
+        name: "name",
+        message: "Please enter manager's name (Required)",
+        validate: (nameInput) => {
           if (nameInput) {
             return true;
           } else {
-            console.log('Manager name is required to continue!');
+            console.log("Manager name is required to continue!");
             return false;
           }
-        }
+        },
       },
       {
-        type: 'input',
-        name: 'email',
+        type: "input",
+        name: "email",
         message: "Please enter manager's email address (Required)",
-          validate: emailInput => {
-            if (emailInput) {
-              return true;
-            } else {
-              console.log('Email address is required to continue!');
-              return false;
-            }
+        validate: (emailInput) => {
+          if (emailInput) {
+            return true;
+          } else {
+            console.log("Email address is required to continue!");
+            return false;
           }
+        },
       },
       {
-        type: 'input',
-        name: 'id',
-        message: 'Please manager employee id (Required)',
-        validate: idInput => {
-            if (idInput) {
-              return true;
-            } else {
-              console.log('Employee id is required!');
-              return false;
-            }
+        type: "input",
+        name: "id",
+        message: "Please manager employee id (Required)",
+        validate: (idInput) => {
+          if (idInput) {
+            return true;
+          } else {
+            console.log("Employee id is required!");
+            return false;
           }
+        },
       },
       {
-        type: 'input',
-        name: 'office number',
-        message: 'What is the office number of the manager? (Required)',
-        validate: schoolInput => {
+        type: "input",
+        name: "officeNumber",
+        message: "What is the office number of the manager? (Required)",
+        validate: (schoolInput) => {
           if (schoolInput) {
             return true;
           } else {
-            console.log('Manager office number is required!');
+            console.log("Manager office number is required!");
             return false;
           }
-        }
-      }
-    ]);
-
-  }
-  const addNewEmployee = (employeeData) => {
-      console.log(`
-  =================
-  Add New Employee
-  =================
-  `);
-
-  if (!employeeData.employee) {
-    employeeData.employee = [];
-  }
-    return inquirer.prompt([
-      {
-        type: 'input',
-        name: 'addNew',
-        message: 'Would you like to add another employee?',
-        default: false
+        },
       },
-      
-      {
-          type: 'list',
-          name: 'role',
-          message: 'Please choose an employee role to add (Required)',
-          choices: ['Engineer', 'Intern'],
-          when: (answers) => answers.addNew === true,
-          validate: roleInput => {
-            if (roleInput) {
-              return true;
-            } else {
-              console.log('Please choose an employee role!');
-              return false;
-            }
-          }
-        },
-        {
-          type: 'input',
-          name: 'school',
-          message: 'What school does the intern attend? (Required)',
-          when: (answers) => answers.role === 'Intern',
-          validate: schoolInput => {
-            if (schoolInput) {
-              return true;
-            } else {
-              console.log('Intern school is required!');
-              return false;
-            }
-          }
-        },
-        {
-          type: 'input',
-          name: 'office number',
-          message: 'What is the office number of the manager? (Required)',
-          when: (answers) => answers.role === 'Manager',
-          validate: schoolInput => {
-            if (schoolInput) {
-              return true;
-            } else {
-              console.log('Manager office number is required!');
-              return false;
-            }
-          }
-        },
-        {
-          type: 'input',
-          name: 'github',
-          message: 'Please enter the GitHub username for the engineer (Required)',
-          when: (answers) => answers.role === 'Engineer',
-          validate: githubInput => {
-            if (githubInput) {
-              return true;
-            } else {
-              console.log('Github username is required!');
-              return false;
-            }
-          }
-        },
-        {
-          type: 'confirm',
-          name: 'addNewEmployee',
-          message: 'Would you like to add another employee?',
-          default: false
-        },
     ])
-    
-    .then(employeeData => {
-      employeeData.employee.push(employeeData);
-      if(employeeData.addNewEmployee){
-        return addNewEmployee(employeeData);
-      } else {
-        return employeeData;
-      }
+    .then((response) => {
+      members.push(
+        new Manager(
+          response.name,
+          response.id,
+          response.email,
+          response.officeNumber
+        )
+      );
+
+      addNewEmployee();
     });
-  } 
+};
 
-  managerQuestions()
-    .then(addNewEmployee)
 
-    
-
-  // Function to write HTML file
-function writeToFile(fileName, data) {
-  fs.writeFile(fileName, generateSite(data), err => {
-      if (err) {
-      console.error(err)
-      return
+//TODO:
+const createEngineer = () => {
+  return inquirer
+  .prompt([
+    {
+      type: "input",
+      name: "name",
+      message: "Please enter engineer's name (Required)",
+      validate: (nameInput) => {
+        if (nameInput) {
+          return true;
+        } else {
+          console.log("Engineer name is required to continue!");
+          return false;
+        }
+      },
+    },
+    {
+      type: "input",
+      name: "email",
+      message: "Please enter engineer's email address (Required)",
+      validate: (emailInput) => {
+        if (emailInput) {
+          return true;
+        } else {
+          console.log("Email address is required to continue!");
+          return false;
+        }
+      },
+    },
+    {
+      type: "input",
+      name: "id",
+      message: "Please engineer's employee id (Required)",
+      validate: (idInput) => {
+        if (idInput) {
+          return true;
+        } else {
+          console.log("Employee id is required!");
+          return false;
+        }
+      },
+    },
+    {
+    type: "input",
+    name: "github",
+    message: "Please enter the GitHub username for the engineer (Required)",
+    validate: (githubInput) => {
+      if (githubInput) {
+        return true;
+      } else {
+        console.log("Github username is required!");
+        return false;
       }
-  })
+    }
+  }
+])
+  .then((response) => {
+    members.push(
+      new Engineer(
+        response.name,
+        response.id,
+        response.email,
+        response.github
+      )
+    );
+
+    addNewEmployee();
+  });
+};
+
+//TODO:
+const createIntern = () => {
+  return inquirer
+  .prompt([
+    {
+      type: "input",
+      name: "name",
+      message: "Please enter intern's name (Required)",
+      validate: (nameInput) => {
+        if (nameInput) {
+          return true;
+        } else {
+          console.log("Intern name is required to continue!");
+          return false;
+        }
+      },
+    },
+    {
+      type: "input",
+      name: "email",
+      message: "Please enter intern's email address (Required)",
+      validate: (emailInput) => {
+        if (emailInput) {
+          return true;
+        } else {
+          console.log("Email address is required to continue!");
+          return false;
+        }
+      },
+    },
+    {
+      type: "input",
+      name: "id",
+      message: "Please intern's employee id (Required)",
+      validate: (idInput) => {
+        if (idInput) {
+          return true;
+        } else {
+          console.log("Employee id is required to continue!");
+          return false;
+        }
+      },
+    },
+    {
+    type: "input",
+    name: "school",
+    message: "Please enter the school associated with the intern. (Required)",
+    validate: (schoolInput) => {
+      if (schoolInput) {
+        return true;
+      } else {
+        console.log("School name is required to continue!");
+        return false;
+      }
+    }
+  }
+])
+  .then((response) => {
+    members.push(
+      new Intern(
+        response.name,
+        response.id,
+        response.email,
+        response.github
+      )
+    );
+
+    addNewEmployee();
+  });
+};
+
+
+      const addNewEmployee = () => {
+          console.log(`
+          =================
+          Add New Employee
+          =================
+          `);
+        
+          return inquirer
+            .prompt([
+              {
+                type: "list",
+                name: "role",
+                message: "Please choose an employee role to add (Required)",
+                choices: ["Engineer", "Intern"],
+              },
+            ])
+            .then((response) => {
+              switch (response.role) {
+                case "Engineer":
+                  createEngineer();
+                  break;
+                case "Intern":
+                  createIntern();
+                default:
+                  createTheTeam();
+              }
+            });
+        };
+
+
+//TODO:
+function createTheTeam() {
+  fs.writeFile("dist/team.html", generateSite(members), (err) => {
+    if (err) {
+      console.error(err);
+      return;
+    }
+  });
 }
+
 // Function to copy style sheet
 const copyFile = () => {
   return new Promise((resolve, reject) => {
-    fs.copyFile('./src/style.css', './dist/style.css', err => {
+    fs.copyFile("./src/style.css", "./dist/style.css", (err) => {
       if (err) {
         reject(err);
         return;
       }
       resolve({
         ok: true,
-        message: 'Stylesheet created!'
+        message: "Stylesheet created!",
       });
     });
   });
 };
 
-// Function to initialize app
-
-function init() {
-  inquirer.prompt(addNewEmployee).then((data) => {
-      writeToFile('./dist/example.html', data);
-      copyFile('./src/style.css', './dist/style.css')
-  });
-}
-
 // Function call to initialize app
-init();
+managerQuestions();
+
