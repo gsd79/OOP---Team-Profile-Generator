@@ -1,17 +1,15 @@
-
-            <div class="employee-card">
-                <div class="card-top-bar">
-                    <div class="employee-name">Grace Dringenburg</div>
-                    <div class="employee-role">Manager</div>
-                </div>
-                <div class="card-body-entry">
-                    id: 79
-                </div>
-                <div class="card-body-entry">
-                    email: <a href="mailto:cgracesharpe@gmail.com">cgracesharpe@gmail.com</a>  
-                </div>
-                <div class="card-body-entry">
-                    office number: 25B
-                </div>
-            </div>
-    
+<div class="employee-card">
+    <div class="card-top-bar">
+    <div class="employee-name">${this.name}</div>
+    <div class="employee-role">${this.role}</div>
+    </div>
+    <div class="card-body-entry">
+    ${this.id}
+    </div>
+    <div class="card-body-entry">
+    email: <a href="mailto:${this.email}">${this.email}</a>  
+    </div>
+    <div class="card-body-entry">
+        office number: ${this.officeNumber}
+    </div>
+</div>

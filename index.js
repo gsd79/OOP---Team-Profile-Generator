@@ -9,16 +9,17 @@ const Manager = require('./lib/Manager');
 const generateSite = require('./src/page-template');
 
 
-const addEmployee = [
+const managerQuestions = () => {
+  return inquirer.prompt([
       {
         type: 'input',
         name: 'name',
-        message: 'Please enter employee name (Required)',
+        message: 'Please enter manager\'s name (Required)',
         validate: nameInput => {
           if (nameInput) {
             return true;
           } else {
-            console.log('Employee name is required to continue!');
+            console.log('Manager name is required to continue!');
             return false;
           }
         }
@@ -26,12 +27,12 @@ const addEmployee = [
       {
         type: 'input',
         name: 'email',
-        message: 'Please enter employee email address (Required)',
+        message: "Please enter manager's email address (Required)",
           validate: emailInput => {
             if (emailInput) {
               return true;
             } else {
-              console.log('Please enter a valid email address!');
+              console.log('Email address is required to continue!');
               return false;
             }
           }
@@ -39,21 +40,56 @@ const addEmployee = [
       {
         type: 'input',
         name: 'id',
-        message: 'Please enter employee id (Required)',
+        message: 'Please manager employee id (Required)',
         validate: idInput => {
             if (idInput) {
               return true;
             } else {
-              console.log('Employee ID is required!');
+              console.log('Employee id is required!');
               return false;
             }
           }
       },
       {
+        type: 'input',
+        name: 'office number',
+        message: 'What is the office number of the manager? (Required)',
+        validate: schoolInput => {
+          if (schoolInput) {
+            return true;
+          } else {
+            console.log('Manager office number is required!');
+            return false;
+          }
+        }
+      }
+    ]);
+
+  }
+  const addNewEmployee = (employeeData) => {
+      console.log(`
+  =================
+  Add New Employee
+  =================
+  `);
+
+  if (!employeeData.employee) {
+    employeeData.employee = [];
+  }
+    return inquirer.prompt([
+      {
+        type: 'input',
+        name: 'addNew',
+        message: 'Would you like to add another employee?',
+        default: false
+      },
+      
+      {
           type: 'list',
           name: 'role',
-          message: 'Please choose an employee role (Required)',
-          choices: ['Engineer', 'Manager', 'Intern'],
+          message: 'Please choose an employee role to add (Required)',
+          choices: ['Engineer', 'Intern'],
+          when: (answers) => answers.addNew === true,
           validate: roleInput => {
             if (roleInput) {
               return true;
@@ -111,16 +147,21 @@ const addEmployee = [
           message: 'Would you like to add another employee?',
           default: false
         },
-    ] 
-
-    function addMoreEmp() {
-        const addMore = inquirer.prompt(addEmployee.addNewEmployee);
-        if (addNewEmployee) {
-          addEmployee;
-        } else {
-          init();
-        }
+    ])
+    
+    .then(employeeData => {
+      employeeData.employee.push(employeeData);
+      if(employeeData.addNewEmployee){
+        return addNewEmployee(employeeData);
+      } else {
+        return employeeData;
       }
+    });
+  } 
+
+  managerQuestions()
+    .then(addNewEmployee)
+
     
 
   // Function to write HTML file
@@ -151,7 +192,7 @@ const copyFile = () => {
 // Function to initialize app
 
 function init() {
-  inquirer.prompt(addEmployee).then((data) => {
+  inquirer.prompt(addNewEmployee).then((data) => {
       writeToFile('./dist/example.html', data);
       copyFile('./src/style.css', './dist/style.css')
   });
