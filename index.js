@@ -215,7 +215,7 @@ const createIntern = () => {
         response.name,
         response.id,
         response.email,
-        response.github
+        response.school
       )
     );
 
@@ -225,19 +225,14 @@ const createIntern = () => {
 
 
       const addNewEmployee = () => {
-          console.log(`
-          =================
-          Add New Employee
-          =================
-          `);
-        
+                  
           return inquirer
             .prompt([
               {
                 type: "list",
                 name: "role",
-                message: "Please choose an employee role to add (Required)",
-                choices: ["Engineer", "Intern"],
+                message: "Would you like to add another employee? (Choose from bellow)",
+                choices: ["Engineer", "Intern", "No"],
               },
             ])
             .then((response) => {
@@ -247,9 +242,10 @@ const createIntern = () => {
                   break;
                 case "Intern":
                   createIntern();
-                default:
+                  break;
+                case "No":
                   createTheTeam();
-              }
+                }
             });
         };
 
@@ -262,23 +258,18 @@ function createTheTeam() {
       return;
     }
   });
-}
-
-// Function to copy style sheet
-const copyFile = () => {
-  return new Promise((resolve, reject) => {
-    fs.copyFile("./src/style.css", "./dist/style.css", (err) => {
-      if (err) {
-        reject(err);
-        return;
-      }
-      resolve({
-        ok: true,
-        message: "Stylesheet created!",
-      });
+  fs.copyFile("./src/style.css", "./dist/style.css", (err) => {
+    if (err) {
+      reject(err);
+      return;
+    }
+    resolve({
+      ok: true,
+      message: "Stylesheet created!",
     });
   });
-};
+}
+
 
 // Function call to initialize app
 managerQuestions();

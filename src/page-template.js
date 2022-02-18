@@ -1,85 +1,96 @@
-  function generateCard() {
+const Engineer = require("../lib/Engineer");
+const Manager = require("../lib/Manager");
+const Intern = require("../lib/Intern");
 
-    if (this.role=== 'Intern')  {
+function generateCard(member) {
+
+    if (member.role === 'Intern') {
         return `
         <div class="employee-card">
                 <div class="card-top-bar">
-                    <div class="employee-name">${this.name}</div>
-                    <div class="employee-role">${this.role}</div>
+                    <div class="employee-name">${member.name}</div>
+                    <div class="employee-role">${member.role}</div>
                 </div>
                 <div class="card-body-entry">
-                id:${this.id}
+                id:${member.id}
                 </div>
                 <div class="card-body-entry">
-                    email: <a href="mailto: ${this.email}">${this.email}</a>  
+                    email: <a href="mailto: ${member.email}">${member.email}</a>  
                 </div>
                 <div class="card-body-entry">
-                    school: ${this.school}
+                    school: ${member.school}
                 </div>
             </div>
         `;
     }
-    else if(this.role === 'Manager') {
+    else if (member.role === 'Manager') {
         return `
         <div class="employee-card">
                 <div class="card-top-bar">
-                <div class="employee-name">${this.name}</div>
-                <div class="employee-role">${this.role}</div>
+                <div class="employee-name">${member.name}</div>
+                <div class="employee-role">Manager</div>
                 </div>
                 <div class="card-body-entry">
-                id:${this.id}
+                id:${member.id}
                 </div>
                 <div class="card-body-entry">
-                email: <a href="mailto:${this.email}">${this.email}</a>  
+                email: <a href="mailto:${member.email}">${member.email}</a>  
                 </div>
                 <div class="card-body-entry">
-                    office number: ${this.officeNumber}
+                    office number: ${member.officeNumber}
                 </div>
             </div>
         `
     }
-    else (this.role === 'Engineer') 
-        return `
+    else (member.role === 'Engineer')
+    return `
             <div class="employee-card">
             <div class="card-top-bar">
-            <div class="employee-name">${this.name}</div>
-            <div class="employee-role">${this.role}</div>
+            <div class="employee-name">${member.name}</div>
+            <div class="employee-role">${member.role}</div>
             </div>
             <div class="card-body-entry">
-            id:${this.id}
+            id:${member.id}
             </div>
             <div class="card-body-entry">
-            email: <a href="mailto:${email}">${email}</a> 
+            email: <a href="mailto:${member.email}">${member.email}</a> 
             </div>
             <div class="card-body-entry">
-                github: <a href="github.com/${github}" target="_blank">${github}</a>
+            github: <a href="github.com/${member.github}" target="_blank">${member.github}</a>
             </div>
             </div>
 
         `
+
+};
+
+function generateSite(members) {
+    for (var i = 0; i < members.length; i++) {
+        generateCard(member)
     };
 
-module.exports = generateSite => {
-    return`
+    return `
     <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Our Team</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <header>
-        <div class="top-bar">Meet Our Team</div>
-    </header>
-    <main>
-        <div class="card-container">
-         ${generateCard()}
-        </div>
-    </main>
-</body>
-</html>
-    `
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Our Team</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <header>
+            <div class="top-bar">Meet Our Team</div>
+        </header>
+        <main>
+            <div class="card-container">
+             ${generateCard(member)}
+            </div>
+        </main>
+    </body>
+    </html>
+    `;
 }
+
+module.exports = generateSite;
