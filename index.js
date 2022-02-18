@@ -10,7 +10,7 @@ const generateSite = require("./src/page-template");
 
 const members = [];
 
-const managerQuestions = () => {
+const createManager = () => {
   inquirer
     .prompt([
       {
@@ -272,5 +272,5 @@ function createTheTeam() {
 
 
 // Function call to initialize app
-managerQuestions();
+createManager();
 
