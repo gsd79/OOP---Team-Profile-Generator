@@ -14,13 +14,13 @@ function generateCard(member) {
                     <div class="employee-role">${member.getRole()}</div>
                 </div>
                 <div class="card-body-entry">
-                id:${member.id}
+                <b>id:</b>${member.id}
                 </div>
                 <div class="card-body-entry">
-                    email: <a href="mailto: ${member.email}">${member.email}</a>  
+                <b>email:</b> <a href="mailto: ${member.email}">${member.email}</a>  
                 </div>
                 <div class="card-body-entry">
-                    school: ${member.school}
+                <b>school:</b> ${member.school}
                 </div>
             </div>
         `;
@@ -33,13 +33,13 @@ function generateCard(member) {
                 <div class="employee-role">${member.getRole()}</div>
                 </div>
                 <div class="card-body-entry">
-                id:${member.id}
+                <b>id:</b>${member.id}
                 </div>
                 <div class="card-body-entry">
-                email: <a href="mailto:${member.email}">${member.email}</a>  
+                <b>email:</b> <a href="mailto:${member.email}">${member.email}</a>  
                 </div>
                 <div class="card-body-entry">
-                office number: ${member.officeNumber}
+                <b>office number:</b> ${member.officeNumber}
                 </div>
             </div>
         `
@@ -52,19 +52,21 @@ function generateCard(member) {
             <div class="employee-role">${member.getRole()}</div>
             </div>
             <div class="card-body-entry">
-            id:${member.id}
+            <b>id:</b>${member.id}
             </div>
             <div class="card-body-entry">
-            email: <a href="mailto:${member.email}">${member.email}</a> 
+            <b>email:</b> <a href="mailto:${member.email}">${member.email}</a> 
             </div>
             <div class="card-body-entry">
-            github: <a href="github.com/${member.github}" target="_blank">${member.github}</a>
+            <b>github:</b> <a href="https://github.com/${member.github}" target="_blank">${member.github}</a>
             </div>
             </div>
 
         `
 
 };
+
+// interate through responses and create cards
 
 function generateSite(members) {
     var cards ='';

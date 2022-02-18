@@ -202,7 +202,7 @@ const createIntern = () => {
     {
     type: "input",
     name: "school",
-    message: "Please enter the school associated with the intern. (Required)",
+    message: "Please enter the school associated with the intern (Required)",
     validate: (schoolInput) => {
       if (schoolInput) {
         return true;
