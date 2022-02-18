@@ -3,62 +3,62 @@ const Manager = require("../lib/Manager");
 const Intern = require("../lib/Intern");
 const Employee = require("../lib/Employee");
 
-function generateCard(members) {
+function generateCard(member) {
    
 
-    if (members.role === 'Intern') {
+    if (member.getRole() === 'Intern') {
         return `
         <div class="employee-card">
                 <div class="card-top-bar">
-                    <div class="employee-name">${members.name}</div>
-                    <div class="employee-role">${members.role}</div>
+                    <div class="employee-name">${member.name}</div>
+                    <div class="employee-role">${member.getRole()}</div>
                 </div>
                 <div class="card-body-entry">
-                id:${members.id}
+                id:${member.id}
                 </div>
                 <div class="card-body-entry">
-                    email: <a href="mailto: ${members.email}">${members.email}</a>  
+                    email: <a href="mailto: ${member.email}">${member.email}</a>  
                 </div>
                 <div class="card-body-entry">
-                    school: ${members.school}
+                    school: ${member.school}
                 </div>
             </div>
         `;
     }
-    else if (members.role === 'Manager') {
+    else if (member.getRole() === 'Manager') {
         return `
         <div class="employee-card">
                 <div class="card-top-bar">
-                <div class="employee-name">${members.name}</div>
-                <div class="employee-role">${members.role}</div>
+                <div class="employee-name">${member.name}</div>
+                <div class="employee-role">${member.getRole()}</div>
                 </div>
                 <div class="card-body-entry">
-                id:${members.id}
+                id:${member.id}
                 </div>
                 <div class="card-body-entry">
-                email: <a href="mailto:${members.email}">${members.email}</a>  
+                email: <a href="mailto:${member.email}">${member.email}</a>  
                 </div>
                 <div class="card-body-entry">
-                office number: ${members.officeNumber}
+                office number: ${member.officeNumber}
                 </div>
             </div>
         `
     }
-    else (members.role === 'Engineer')
+    else (member.getRole() === 'Engineer')
     return `
             <div class="employee-card">
             <div class="card-top-bar">
-            <div class="employee-name">${members.name}</div>
-            <div class="employee-role">${members.role}</div>
+            <div class="employee-name">${member.name}</div>
+            <div class="employee-role">${member.getRole()}</div>
             </div>
             <div class="card-body-entry">
-            id:${members.id}
+            id:${member.id}
             </div>
             <div class="card-body-entry">
-            email: <a href="mailto:${members.email}">${members.email}</a> 
+            email: <a href="mailto:${member.email}">${member.email}</a> 
             </div>
             <div class="card-body-entry">
-            github: <a href="github.com/${members.github}" target="_blank">${members.github}</a>
+            github: <a href="github.com/${member.github}" target="_blank">${member.github}</a>
             </div>
             </div>
 
@@ -67,8 +67,12 @@ function generateCard(members) {
 };
 
 function generateSite(members) {
+    var cards ='';
+
     for (var i = 0; i < members.length; i++) {
-        generateCard(members)
+        var card = generateCard(members[i])
+
+        cards = cards.concat(card);
     };
 
     return `
@@ -87,7 +91,7 @@ function generateSite(members) {
         </header>
         <main>
             <div class="card-container">
-             ${generateCard(members)}
+             ${cards}
             </div>
         </main>
     </body>

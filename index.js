@@ -8,8 +8,10 @@ const Intern = require("./lib/Intern");
 const Manager = require("./lib/Manager");
 const generateSite = require("./src/page-template");
 
+// array answer objects will be pushed into and used to create html
 const members = [];
 
+// first questions when app is intiliazed -- manager questions
 const createManager = () => {
   inquirer
     .prompt([
@@ -66,6 +68,7 @@ const createManager = () => {
         },
       },
     ])
+    // responses populated into 'new Manager' object which is then pushed into 'members' array
     .then((response) => {
       members.push(
         new Manager(
@@ -75,13 +78,13 @@ const createManager = () => {
           response.officeNumber
         )
       );
-
+// function that will ask if a new employee is to be added
       addNewEmployee();
     });
 };
 
 
-//TODO:
+// function to initalize Engineer questions when chosen from addNewEmployee()
 const createEngineer = () => {
   return inquirer
   .prompt([
@@ -138,6 +141,7 @@ const createEngineer = () => {
     }
   }
 ])
+// responses populated into 'new Engineer' object which is then pushed into 'members' array
   .then((response) => {
     members.push(
       new Engineer(
@@ -152,7 +156,7 @@ const createEngineer = () => {
   });
 };
 
-//TODO:
+// function to initalize Engineer questions when chosen from addNewEmployee()
 const createIntern = () => {
   return inquirer
   .prompt([
@@ -209,6 +213,7 @@ const createIntern = () => {
     }
   }
 ])
+// responses populated into 'new Intern' object which is then pushed into 'members' array
   .then((response) => {
     members.push(
       new Intern(
@@ -250,7 +255,7 @@ const createIntern = () => {
         };
 
 
-//TODO:
+// function to write responses to indicate path, using generateSite(members) and copy style.css from one path to the other along side generated HTML
 function createTheTeam() {
   fs.writeFile("dist/team.html", generateSite(members), (err) => {
     if (err) {
@@ -263,10 +268,7 @@ function createTheTeam() {
       reject(err);
       return;
     }
-    resolve({
-      ok: true,
-      message: "Stylesheet created!",
-    });
+    
   });
 }
 
