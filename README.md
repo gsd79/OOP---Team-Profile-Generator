@@ -4,6 +4,9 @@
   ## Description
   A command line application which prompts the user for team information with Inquirer package and then generates HTML landing page featuring the answers in card format. 
 
+  ## Walkthrough video
+  ("https://drive.google.com/file/d/1mWm0hiklzpUqRSyGK2vkINTbG26_Q740/view")
+
   ## Table of Contents
   * [Installation Guide](#installation-guidelines)
   * [Usage Guide](#usage-guidelines)
